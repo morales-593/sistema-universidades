@@ -104,6 +104,7 @@ switch ($action) {
         break;
 
     // Módulo Carreras
+// En la sección de Módulo Carreras:
     case 'carreras':
         require_once 'controllers/CarreraController.php';
         $controller = new CarreraController();
@@ -111,18 +112,39 @@ switch ($action) {
         break;
 
     case 'carrera-guardar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/CarreraController.php';
         $controller = new CarreraController();
         $controller->guardar();
         break;
 
     case 'carrera-eliminar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/CarreraController.php';
         $controller = new CarreraController();
         $controller->eliminar();
         break;
 
+    case 'carrera-ver':
+        require_once 'controllers/CarreraController.php';
+        $controller = new CarreraController();
+        $controller->ver();
+        break;
+
+    case 'carreras-por-universidad':
+        require_once 'controllers/CarreraController.php';
+        $controller = new CarreraController();
+        $controller->getPorUniversidad();
+        break;
+
     // Módulo Modalidades
+// En la sección de Módulo Modalidades:
     case 'modalidades':
         require_once 'controllers/ModalidadController.php';
         $controller = new ModalidadController();
@@ -130,15 +152,29 @@ switch ($action) {
         break;
 
     case 'modalidad-guardar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/ModalidadController.php';
         $controller = new ModalidadController();
         $controller->guardar();
         break;
 
     case 'modalidad-eliminar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/ModalidadController.php';
         $controller = new ModalidadController();
         $controller->eliminar();
+        break;
+
+    case 'modalidad-ver':
+        require_once 'controllers/ModalidadController.php';
+        $controller = new ModalidadController();
+        $controller->ver();
         break;
 
     // Módulo Usuarios (solo admin)

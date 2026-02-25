@@ -53,7 +53,7 @@ class Carrera extends Model {
                   FROM " . $this->table . " c
                   JOIN universidades u ON c.id_universidad = u.id
                   JOIN regiones r ON u.id_region = r.id
-                  ORDER BY c.id DESC";
+                  ORDER BY c.nombre ASC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -92,13 +92,21 @@ class Carrera extends Model {
 
         // Insertar nuevas asignaciones
         if (!empty($modalidades)) {
-            $query = "INSERT INTO carrera_modalidad (id_carrera, id_modalidad) VALUES ";
             $values = [];
-            foreach ($modalidades as $id_modalidad) {
-                $values[] = "($id_carrera, $id_modalidad)";
+            $params = [];
+            foreach ($modalidades as $index => $id_modalidad) {
+                $values[] = "(:id_carrera$index, :id_modalidad$index)";
+                $params[":id_carrera$index"] = $id_carrera;
+                $params[":id_modalidad$index"] = $id_modalidad;
             }
-            $query .= implode(", ", $values);
+            
+            $query = "INSERT INTO carrera_modalidad (id_carrera, id_modalidad) VALUES " . implode(", ", $values);
             $stmt = $this->conn->prepare($query);
+            
+            foreach ($params as $key => &$val) {
+                $stmt->bindParam($key, $val);
+            }
+            
             return $stmt->execute();
         }
         return true;
@@ -110,6 +118,14 @@ class Carrera extends Model {
         $stmt->bindParam(':id_universidad', $id_universidad);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function delete($id) {
+        // Las relaciones en carrera_modalidad se eliminan automáticamente por ON DELETE CASCADE
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
     }
 }
 ?>

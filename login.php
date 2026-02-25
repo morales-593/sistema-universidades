@@ -38,11 +38,6 @@
                             <i class="bi bi-exclamation-triangle"></i> Credenciales incorrectas
                         </div>
                         <?php endif; ?>
-                        
-                        <div class="alert alert-info small">
-                            <i class="bi bi-info-circle"></i> 
-                            <strong>Demo:</strong> admin@admin.com / admin123 (Admin) | personal@personal.com / personal123 (Personal)
-                        </div>
                     </form>
                 </div>
             </div>
