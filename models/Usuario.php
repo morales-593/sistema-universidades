@@ -27,19 +27,41 @@ class Usuario extends Model {
     }
 
     public function update($id, $data) {
-        $query = "UPDATE " . $this->table . " 
-                  SET nombre = :nombre, 
-                      email = :email, 
-                      id_rol = :id_rol, 
-                      activo = :activo 
-                  WHERE id = :id";
+        // Construir query dinámicamente según los campos proporcionados
+        $fields = [];
+        $params = [':id' => $id];
+        
+        if (isset($data['nombre'])) {
+            $fields[] = "nombre = :nombre";
+            $params[':nombre'] = $data['nombre'];
+        }
+        
+        if (isset($data['email'])) {
+            $fields[] = "email = :email";
+            $params[':email'] = $data['email'];
+        }
+        
+        if (isset($data['id_rol'])) {
+            $fields[] = "id_rol = :id_rol";
+            $params[':id_rol'] = $data['id_rol'];
+        }
+        
+        if (isset($data['activo'])) {
+            $fields[] = "activo = :activo";
+            $params[':activo'] = $data['activo'];
+        }
+        
+        if (empty($fields)) {
+            return false;
+        }
+        
+        $query = "UPDATE " . $this->table . " SET " . implode(', ', $fields) . " WHERE id = :id";
         
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':nombre', $data['nombre']);
-        $stmt->bindParam(':email', $data['email']);
-        $stmt->bindParam(':id_rol', $data['id_rol']);
-        $stmt->bindParam(':activo', $data['activo']);
-        $stmt->bindParam(':id', $id);
+        
+        foreach ($params as $key => &$val) {
+            $stmt->bindParam($key, $val);
+        }
         
         return $stmt->execute();
     }
@@ -97,6 +119,17 @@ class Usuario extends Model {
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getById($id) {
+        $query = "SELECT u.*, r.nombre as rol_nombre 
+                  FROM " . $this->table . " u
+                  JOIN roles r ON u.id_rol = r.id
+                  WHERE u.id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>
