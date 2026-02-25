@@ -70,6 +70,7 @@ switch ($action) {
         break;
 
     // Módulo Universidades
+// En la sección de Módulo Universidades:
     case 'universidades':
         require_once 'controllers/UniversidadController.php';
         $controller = new UniversidadController();
@@ -77,15 +78,29 @@ switch ($action) {
         break;
 
     case 'universidad-guardar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/UniversidadController.php';
         $controller = new UniversidadController();
         $controller->guardar();
         break;
 
     case 'universidad-eliminar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/UniversidadController.php';
         $controller = new UniversidadController();
         $controller->eliminar();
+        break;
+
+    case 'universidad-ver':
+        require_once 'controllers/UniversidadController.php';
+        $controller = new UniversidadController();
+        $controller->ver();
         break;
 
     // Módulo Carreras
