@@ -36,6 +36,7 @@ switch ($action) {
         break;
 
     // Módulo Regiones
+// En la sección de Módulo Regiones:
     case 'regiones':
         require_once 'controllers/RegionController.php';
         $controller = new RegionController();
@@ -43,15 +44,29 @@ switch ($action) {
         break;
 
     case 'region-guardar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/RegionController.php';
         $controller = new RegionController();
         $controller->guardar();
         break;
 
     case 'region-eliminar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
         require_once 'controllers/RegionController.php';
         $controller = new RegionController();
         $controller->eliminar();
+        break;
+
+    case 'region-ver':
+        require_once 'controllers/RegionController.php';
+        $controller = new RegionController();
+        $controller->ver();
         break;
 
     // Módulo Universidades
