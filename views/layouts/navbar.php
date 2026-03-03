@@ -37,12 +37,7 @@ $baseUrl = BASE_URL;
                         <i class="bi bi-book"></i> Carreras
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo $_GET['action'] == 'informacion' ? 'active' : ''; ?>"
-                        href="index.php?action=informacion">
-                        <i class="bi bi-info-circle"></i> Info Universidades
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link <?php echo $_GET['action'] == 'modalidades' ? 'active' : ''; ?>"
                         href="index.php?action=modalidades">
@@ -57,6 +52,13 @@ $baseUrl = BASE_URL;
                         </a>
                     </li>
                 <?php endif; ?>
+
+                <li class="nav-item">
+                    <a class="nav-link <?php echo $_GET['action'] == 'informacion' ? 'active' : ''; ?>"
+                        href="index.php?action=informacion">
+                        <i class="bi bi-info-circle"></i> Info Universidades
+                    </a>
+                </li>
             </ul>
             <div class="d-flex align-items-center">
                 <span class="text-white me-3">

@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <tr>
                                 <th>Universidad</th>
                                 <th>Región</th>
+                                <th>Modalidad</th>
                                 <th>Tipo de Proceso</th>
                                 <th>Tipo de Prueba</th>
                                 <th>Temas</th>
@@ -101,14 +102,36 @@ document.addEventListener('DOMContentLoaded', function() {
                         <tbody>
                             <?php if (empty($informaciones)): ?>
                             <tr>
-                                <td colspan="14" class="text-center">No hay información registrada para ninguna universidad.</td>
+                                <td colspan="15" class="text-center">No hay información registrada para ninguna universidad.</td>
                             </tr>
                             <?php else: ?>
-                                <?php foreach ($informaciones as $i): ?>
+                                <?php foreach ($informaciones as $i): 
+                                    // Obtener modalidades de la universidad
+                                    require_once 'models/Carrera.php';
+                                    $carreraModel = new Carrera();
+                                    $modalidadesUni = [];
+                                    $carreras = $carreraModel->getByUniversidad($i['id_universidad']);
+                                    foreach ($carreras as $c) {
+                                        $mods = $carreraModel->getModalidades($c['id']);
+                                        foreach ($mods as $m) {
+                                            if (!in_array($m['nombre'], $modalidadesUni)) {
+                                                $modalidadesUni[] = $m['nombre'];
+                                            }
+                                        }
+                                    }
+                                ?>
                                 <tr data-region="<?php echo htmlspecialchars($i['region_nombre']); ?>" 
                                     data-nombre="<?php echo strtolower(htmlspecialchars($i['universidad_nombre'])); ?>">
                                     <td><strong><?php echo htmlspecialchars($i['universidad_nombre']); ?></strong></td>
                                     <td><span class="badge bg-info"><?php echo $i['region_nombre']; ?></span></td>
+                                    <td>
+                                        <?php foreach ($modalidadesUni as $mod): ?>
+                                            <span class="badge bg-primary mb-1"><?php echo $mod; ?></span>
+                                        <?php endforeach; ?>
+                                        <?php if (empty($modalidadesUni)): ?>
+                                            <span class="text-muted">No especificado</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?php echo nl2br(htmlspecialchars(substr($i['tipo_proceso'] ?? '', 0, 50))); ?><?php echo (strlen($i['tipo_proceso'] ?? '') > 50) ? '...' : ''; ?></td>
                                     <td><?php echo nl2br(htmlspecialchars(substr($i['tipo_prueba'] ?? '', 0, 50))); ?><?php echo (strlen($i['tipo_prueba'] ?? '') > 50) ? '...' : ''; ?></td>
                                     <td><?php echo nl2br(htmlspecialchars(substr($i['temas'] ?? '', 0, 50))); ?><?php echo (strlen($i['temas'] ?? '') > 50) ? '...' : ''; ?></td>
@@ -334,143 +357,169 @@ function verInfoDetalle(id_universidad) {
     fetch(`index.php?action=informacion-ver&id=${id_universidad}`)
         .then(response => response.json())
         .then(data => {
-            const html = `
-                <div class="text-center mb-4">
-                    <h3>${data.universidad_nombre}</h3>
-                    <span class="badge bg-info">${data.region_nombre}</span>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Tipo de Proceso</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.tipo_proceso || 'No especificado')}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Tipo de Prueba</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.tipo_prueba || 'No especificado')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Temas</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.temas || 'No especificado')}
+            // Obtener modalidades de la universidad
+            fetch(`index.php?action=carreras-por-universidad&id_universidad=${id_universidad}`)
+                .then(response => response.json())
+                .then(carreras => {
+                    let modalidadesSet = new Set();
+                    carreras.forEach(c => {
+                        if (c.modalidades) {
+                            c.modalidades.forEach(m => modalidadesSet.add(m.nombre));
+                        }
+                    });
+                    const modalidades = Array.from(modalidadesSet);
+                    
+                    let modalidadesHtml = '';
+                    if (modalidades.length > 0) {
+                        modalidadesHtml = modalidades.map(m => 
+                            `<span class="badge bg-primary me-1">${m}</span>`
+                        ).join('');
+                    } else {
+                        modalidadesHtml = '<span class="text-muted">No especificado</span>';
+                    }
+                    
+                    const html = `
+                        <div class="text-center mb-4">
+                            <h3>${data.universidad_nombre}</h3>
+                            <span class="badge bg-info">${data.region_nombre}</span>
+                            <div class="mt-2">
+                                <strong>Modalidades:</strong><br>
+                                ${modalidadesHtml}
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Incidencia</strong>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Tipo de Proceso</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.tipo_proceso || 'No especificado')}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                ${nl2br(data.incidencia || 'No especificado')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Registro</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.registro || 'No especificado')}
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Tipo de Prueba</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.tipo_prueba || 'No especificado')}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Inscripciones</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.inscripciones || 'No especificado')}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Examen</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.examen || 'No especificado')}
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Temas</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.temas || 'No especificado')}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Postulación</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.postulacion || 'No especificado')}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Asignación de Cupos</strong>
-                            </div>
-                            <div class="card-body">
-                                ${nl2br(data.asignacion_cupos || 'No especificado')}
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Incidencia</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.incidencia || 'No especificado')}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-3">
-                            <div class="card-header bg-light">
-                                <strong>Matrícula</strong>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Registro</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.registro || 'No especificado')}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                ${nl2br(data.matricula || 'No especificado')}
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Inscripciones</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.inscripciones || 'No especificado')}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Examen</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.examen || 'No especificado')}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <small>
-                                    <strong>Creado por:</strong> ${data.creador_nombre || 'Sistema'} el ${new Date(data.created_at).toLocaleString()}<br>
-                                    ${data.actualizado_por ? `<strong>Última edición:</strong> ${data.actualizador_nombre || 'Desconocido'} el ${new Date(data.updated_at).toLocaleString()}` : ''}
-                                </small>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Postulación</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.postulacion || 'No especificado')}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Asignación de Cupos</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.asignacion_cupos || 'No especificado')}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <strong>Matrícula</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        ${nl2br(data.matricula || 'No especificado')}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('detalleInfoContent').innerHTML = html;
-            new bootstrap.Modal(document.getElementById('modalVerInfo')).show();
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <small>
+                                            <strong>Creado por:</strong> ${data.creador_nombre || 'Sistema'} el ${new Date(data.created_at).toLocaleString()}<br>
+                                            ${data.actualizado_por ? `<strong>Última edición:</strong> ${data.actualizador_nombre || 'Desconocido'} el ${new Date(data.updated_at).toLocaleString()}` : ''}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('detalleInfoContent').innerHTML = html;
+                    new bootstrap.Modal(document.getElementById('modalVerInfo')).show();
+                });
         });
 }
 
