@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="tablaCarreras" width="100%" cellspacing="0">
                         <thead>
-                            <tr>
+                            <tr>    
                                 <th>ID</th>
                                 <th>Carrera</th>
                                 <th>Universidad</th>

@@ -177,8 +177,7 @@ switch ($action) {
         $controller->ver();
         break;
 
-    // Módulo Usuarios (solo admin)
-// En la sección de Módulo Usuarios:
+    // En la sección de Módulo Usuarios:
     case 'usuarios':
         if (!Session::isAdmin()) {
             header("Location: index.php?action=acceso-denegado");
@@ -254,6 +253,48 @@ switch ($action) {
 
     case 'api-modalidades':
         require_once 'api/modalidades.php';
+        break;
+    // En la sección de Módulo Información Universidades:
+    case 'informacion':
+        require_once 'controllers/InformacionUniversidadController.php';
+        $controller = new InformacionUniversidadController();
+        $controller->index();
+        break;
+
+    case 'informacion-guardar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
+        require_once 'controllers/InformacionUniversidadController.php';
+        $controller = new InformacionUniversidadController();
+        $controller->guardar();
+        break;
+
+    case 'informacion-eliminar':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
+        require_once 'controllers/InformacionUniversidadController.php';
+        $controller = new InformacionUniversidadController();
+        $controller->eliminar();
+        break;
+
+    case 'informacion-ver':
+        require_once 'controllers/InformacionUniversidadController.php';
+        $controller = new InformacionUniversidadController();
+        $controller->ver();
+        break;
+
+    case 'informacion-sin-info':
+        if (!Session::isAdmin()) {
+            header("Location: index.php?action=acceso-denegado");
+            exit();
+        }
+        require_once 'controllers/InformacionUniversidadController.php';
+        $controller = new InformacionUniversidadController();
+        $controller->getUniversidadesSinInfo();
         break;
 
     // Acceso denegado
