@@ -2,9 +2,8 @@
 
 .regiones-catalogo {
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
   min-height: 100vh;
-  padding: 20px;
+  padding: 10px;
 }
 
 /* Header */

@@ -3,6 +3,8 @@
 if (!isset($modalidades)) $modalidades = [];
 ?>
 
+<link rel="stylesheet" href="assets/css/admin/modalidades/modalidad.css">
+
 <!-- Mensajes con SweetAlert -->
 <?php if (isset($_GET['mensaje'])): ?>
 <script>
@@ -12,7 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
         title: '¡Éxito!',
         text: '<?php echo $_GET['mensaje']; ?>',
         timer: 3000,
-        showConfirmButton: false
+        showConfirmButton: false,
+        background: 'linear-gradient(135deg, #667eea, #764ba2)',
+        color: 'white'
     });
 });
 </script>
@@ -24,126 +28,135 @@ document.addEventListener('DOMContentLoaded', function() {
     Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: '<?php echo $_GET['error']; ?>'
+        text: '<?php echo $_GET['error']; ?>',
+        background: 'linear-gradient(135deg, #dc3545, #c82333)',
+        color: 'white'
     });
 });
 </script>
 <?php endif; ?>
 
-<div class="row mb-4">
-    <div class="col-12">
-        <h2 class="mb-4">
-            <i class="bi bi-grid-3x3-gap-fill"></i> Gestión de Modalidades
+<div class="admin-modalidades">
+    <!-- Header -->
+    <div class="admin-header">
+        <h2>
+            <i class="bi bi-grid-3x3-gap-fill"></i>
+            Gestión de Modalidades
         </h2>
     </div>
-</div>
 
-<!-- Botón Nueva Modalidad -->
-<div class="row mb-4">
-    <div class="col-12">
-        <button class="btn btn-primary" onclick="abrirModalNuevaModalidad()">
-            <i class="bi bi-plus-circle"></i> Nueva Modalidad
+    <!-- Action Bar -->
+    <div class="action-bar">
+        <button class="btn-nuevo" onclick="abrirModalNuevaModalidad()">
+            <i class="bi bi-plus-circle"></i>
+            Nueva Modalidad
         </button>
-    </div>
-</div>
-
-<!-- Filtro de búsqueda -->
-<div class="row mb-4">
-    <div class="col-md-6">
-        <input type="text" class="form-control" id="buscarModalidad" placeholder="Buscar modalidad..." onkeyup="filtrarModalidades()">
-    </div>
-</div>
-
-<!-- Grid de Modalidades -->
-<div class="row" id="modalidadesGrid">
-    <?php if (empty($modalidades)): ?>
-    <div class="col-12">
-        <div class="alert alert-info">
-            No hay modalidades registradas.
+        
+        <div class="search-wrapper">
+            <input type="text" class="search-input-admin" id="buscarModalidad" placeholder="Buscar modalidad..." onkeyup="filtrarModalidades()">
         </div>
     </div>
-    <?php else: ?>
-        <?php foreach ($modalidades as $m): ?>
-        <div class="col-md-6 col-lg-4 mb-4 modalidad-card" 
-             data-id="<?php echo $m['id']; ?>"
-             data-nombre="<?php echo strtolower(htmlspecialchars($m['nombre'])); ?>">
-            <div class="card h-100 shadow">
-                <div class="card-header bg-white py-3">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" 
-                             style="width: 50px; height: 50px;">
-                            <i class="bi bi-grid-3x3-gap-fill fs-4"></i>
+
+    <!-- Grid de Modalidades -->
+    <div class="modalidades-grid" id="modalidadesGrid">
+        <?php if (empty($modalidades)): ?>
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+                <p>No hay modalidades registradas.</p>
+            </div>
+        </div>
+        <?php else: ?>
+            <?php foreach ($modalidades as $m): ?>
+            <div class="modalidad-card" 
+                 data-id="<?php echo $m['id']; ?>"
+                 data-nombre="<?php echo strtolower(htmlspecialchars($m['nombre'])); ?>">
+                <div class="card-modalidad">
+                    <div class="card-header-modalidad">
+                        <div class="modalidad-icon">
+                            <i class="bi bi-grid-3x3-gap-fill"></i>
                         </div>
-                        <div>
-                            <h5 class="card-title mb-0"><?php echo htmlspecialchars($m['nombre']); ?></h5>
-                            <small class="text-muted">ID: <?php echo $m['id']; ?></small>
+                        <div class="modalidad-titulo">
+                            <h5><?php echo htmlspecialchars($m['nombre']); ?></h5>
+                            <small>
+                                <i class="bi bi-hash"></i> ID: <?php echo $m['id']; ?>
+                            </small>
                         </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p class="card-text small text-muted mb-3">
-                        <?php echo htmlspecialchars($m['descripcion'] ?? 'Sin descripción'); ?>
-                    </p>
-                    
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="badge bg-info">
-                            <i class="bi bi-book"></i> <?php echo $m['carreras_count']; ?> carreras
-                        </span>
-                        <small class="text-muted">
-                            <i class="bi bi-calendar"></i> <?php echo date('d/m/Y', strtotime($m['created_at'])); ?>
-                        </small>
                     </div>
                     
-                    <?php if (!empty($m['carreras'])): ?>
-                    <div class="small">
-                        <strong>Carreras:</strong>
-                        <div class="mt-2">
-                            <?php 
-                            $carrerasLimit = array_slice($m['carreras'], 0, 3);
-                            foreach ($carrerasLimit as $c): ?>
-                                <span class="badge bg-secondary mb-1"><?php echo htmlspecialchars($c['nombre']); ?></span>
-                            <?php endforeach; ?>
-                            <?php if (count($m['carreras']) > 3): ?>
-                                <span class="badge bg-light text-dark">+<?php echo count($m['carreras']) - 3; ?> más</span>
-                            <?php endif; ?>
+                    <div class="card-body-modalidad">
+                        <div class="modalidad-descripcion">
+                            <?php echo htmlspecialchars($m['descripcion'] ?? 'Sin descripción'); ?>
                         </div>
+                        
+                        <div class="stats-row">
+                            <span class="carreras-badge">
+                                <i class="bi bi-book"></i>
+                                <?php echo $m['carreras_count']; ?> carreras
+                            </span>
+                            <span class="fecha-badge">
+                                <i class="bi bi-calendar"></i>
+                                <?php echo date('d/m/Y', strtotime($m['created_at'])); ?>
+                            </span>
+                        </div>
+                        
+                        <?php if (!empty($m['carreras'])): ?>
+                        <div class="carreras-preview">
+                            <strong><i class="bi bi-book"></i> Carreras:</strong>
+                            <div>
+                                <?php 
+                                $carrerasLimit = array_slice($m['carreras'], 0, 3);
+                                foreach ($carrerasLimit as $c): ?>
+                                    <span class="carrera-mini-badge">
+                                        <?php echo htmlspecialchars($c['nombre']); ?>
+                                    </span>
+                                <?php endforeach; ?>
+                                <?php if (count($m['carreras']) > 3): ?>
+                                    <span class="more-badge">
+                                        +<?php echo count($m['carreras']) - 3; ?> más
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                     </div>
-                    <?php endif; ?>
-                </div>
-                <div class="card-footer bg-white">
-                    <div class="btn-group w-100" role="group">
-                        <button class="btn btn-sm btn-info" onclick="verModalidad(<?php echo $m['id']; ?>)">
-                            <i class="bi bi-eye"></i> Ver
-                        </button>
-                        <button class="btn btn-sm btn-warning" onclick="editarModalidad(<?php echo $m['id']; ?>, '<?php echo htmlspecialchars($m['nombre']); ?>', '<?php echo htmlspecialchars($m['descripcion'] ?? ''); ?>')">
-                            <i class="bi bi-pencil"></i> Editar
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="eliminarModalidad(<?php echo $m['id']; ?>, '<?php echo htmlspecialchars($m['nombre']); ?>', <?php echo $m['carreras_count']; ?>)">
-                            <i class="bi bi-trash"></i> Eliminar
-                        </button>
+                    
+                    <div class="card-footer-modalidad">
+                        <div class="action-group">
+                            <button class="btn-action-card btn-view-card" onclick="verModalidad(<?php echo $m['id']; ?>)">
+                                <i class="bi bi-eye"></i> Ver
+                            </button>
+                            <button class="btn-action-card btn-edit-card" onclick="editarModalidad(<?php echo $m['id']; ?>, '<?php echo htmlspecialchars($m['nombre']); ?>', '<?php echo htmlspecialchars($m['descripcion'] ?? ''); ?>')">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                            <button class="btn-action-card btn-delete-card" onclick="eliminarModalidad(<?php echo $m['id']; ?>, '<?php echo htmlspecialchars($m['nombre']); ?>', <?php echo $m['carreras_count']; ?>)">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
 </div>
 
 <!-- Modal para Ver Detalle de Modalidad -->
 <div class="modal fade" id="modalVerModalidad" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-info text-white">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modal-content-admin">
+            <div class="modal-header modal-header-admin">
                 <h5 class="modal-title">
-                    <i class="bi bi-grid-3x3-gap-fill"></i> Detalle de Modalidad
+                    <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+                    Detalle de Modalidad
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="detalleModalidadContent">
+            <div class="modal-body modal-body-admin" id="detalleModalidadContent">
                 <!-- Contenido dinámico -->
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <div class="modal-footer modal-footer-admin">
+                <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -151,34 +164,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Modal para Crear/Editar Modalidad -->
 <div class="modal fade" id="modalModalidad" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-admin">
+            <div class="modal-header modal-header-admin">
                 <h5 class="modal-title" id="modalModalidadTitle">
-                    <i class="bi bi-plus-circle"></i> Nueva Modalidad
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Nueva Modalidad
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST" action="index.php?action=modalidad-guardar" id="formModalidad">
-                <div class="modal-body">
+                <div class="modal-body modal-body-admin">
                     <input type="hidden" name="id" id="modalidadId">
                     
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre de la Modalidad *</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="100"
+                        <label for="nombre" class="form-label-admin">Nombre de la Modalidad *</label>
+                        <input type="text" class="form-control-admin" id="nombre" name="nombre" required maxlength="100"
                                placeholder="Ej: Presencial, Online, Semipresencial">
-                        <small class="text-muted">Máximo 100 caracteres</small>
+                        <small class="form-hint">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Máximo 100 caracteres
+                        </small>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" 
+                        <label for="descripcion" class="form-label-admin">Descripción</label>
+                        <textarea class="form-control-admin" id="descripcion" name="descripcion" rows="4" 
                                   placeholder="Describe brevemente esta modalidad"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="btnGuardarModalidad">Guardar Modalidad</button>
+                <div class="modal-footer modal-footer-admin">
+                    <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-save" id="btnGuardarModalidad">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Guardar Modalidad
+                    </button>
                 </div>
             </form>
         </div>
@@ -190,8 +210,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function abrirModalNuevaModalidad() {
     document.getElementById('formModalidad').reset();
     document.getElementById('modalidadId').value = '';
-    document.getElementById('modalModalidadTitle').innerHTML = '<i class="bi bi-plus-circle"></i> Nueva Modalidad';
-    document.getElementById('btnGuardarModalidad').innerHTML = 'Guardar Modalidad';
+    document.getElementById('modalModalidadTitle').innerHTML = '<i class="bi bi-plus-circle me-2"></i>Nueva Modalidad';
+    document.getElementById('btnGuardarModalidad').innerHTML = '<i class="bi bi-check-circle me-2"></i>Guardar Modalidad';
     new bootstrap.Modal(document.getElementById('modalModalidad')).show();
 }
 
@@ -200,8 +220,8 @@ function editarModalidad(id, nombre, descripcion) {
     document.getElementById('modalidadId').value = id;
     document.getElementById('nombre').value = nombre;
     document.getElementById('descripcion').value = descripcion;
-    document.getElementById('modalModalidadTitle').innerHTML = '<i class="bi bi-pencil"></i> Editar Modalidad';
-    document.getElementById('btnGuardarModalidad').innerHTML = 'Actualizar Modalidad';
+    document.getElementById('modalModalidadTitle').innerHTML = '<i class="bi bi-pencil me-2"></i>Editar Modalidad';
+    document.getElementById('btnGuardarModalidad').innerHTML = '<i class="bi bi-check-circle me-2"></i>Actualizar Modalidad';
     new bootstrap.Modal(document.getElementById('modalModalidad')).show();
 }
 
@@ -213,63 +233,64 @@ function verModalidad(id) {
             let carrerasHtml = '';
             
             if (data.carreras && data.carreras.length > 0) {
-                carrerasHtml = '<div class="table-responsive"><table class="table table-sm table-hover"><thead><tr><th>Carrera</th><th>Universidad</th><th>Región</th></tr></thead><tbody>';
+                carrerasHtml = '<table class="carreras-table">';
                 data.carreras.forEach(c => {
                     carrerasHtml += `
                         <tr>
-                            <td><strong>${c.nombre}</strong></td>
-                            <td>${c.universidad_nombre}</td>
-                            <td><span class="badge bg-info">${c.region_nombre}</span></td>
+                            <td style="width: 40%;"><strong>${c.nombre}</strong></td>
+                            <td style="width: 40%;">${c.universidad_nombre}</td>
+                            <td style="width: 20%;"><span class="badge-region" style="background: linear-gradient(135deg, #667eea15, #764ba215); color: #667eea; padding: 5px 12px; border-radius: 50px; font-size: 0.8rem;">${c.region_nombre}</span></td>
                         </tr>
                     `;
                 });
-                carrerasHtml += '</tbody></table></div>';
+                carrerasHtml += '</table>';
             } else {
-                carrerasHtml = '<p class="text-muted">No hay carreras que ofrezcan esta modalidad</p>';
+                carrerasHtml = `
+                    <div class="text-center py-4">
+                        <i class="bi bi-book fs-1 text-muted d-block mb-3"></i>
+                        <p class="text-muted">No hay carreras que ofrezcan esta modalidad</p>
+                    </div>
+                `;
             }
             
             const html = `
                 <div class="text-center mb-4">
-                    <i class="bi bi-grid-3x3-gap-fill fs-1 text-primary"></i>
-                    <h3 class="mt-2">${data.nombre}</h3>
+                    <div class="detail-icon">
+                        <i class="bi bi-grid-3x3-gap-fill"></i>
+                    </div>
+                    <h3 style="color: #2d3748; font-weight: 700;">${data.nombre}</h3>
                 </div>
                 
-                <div class="row mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header bg-white">
-                                <i class="bi bi-info-circle"></i> Información
-                            </div>
-                            <div class="card-body">
-                                <p><strong>ID:</strong> ${data.id}</p>
-                                <p><strong>Descripción:</strong> ${data.descripcion || 'No especificada'}</p>
-                                <p><strong>Fecha de Creación:</strong> ${new Date(data.created_at).toLocaleDateString()}</p>
-                            </div>
+                        <div class="info-card-detail">
+                            <h6 style="color: #2d3748; font-weight: 600; margin-bottom: 15px;">
+                                <i class="bi bi-info-circle me-2"></i>Información
+                            </h6>
+                            <p><i class="bi bi-hash me-2"></i> <strong>ID:</strong> ${data.id}</p>
+                            <p><i class="bi bi-calendar me-2"></i> <strong>Fecha Creación:</strong> ${new Date(data.created_at).toLocaleDateString()}</p>
+                            <p><i class="bi bi-card-text me-2"></i> <strong>Descripción:</strong><br>${data.descripcion || 'No especificada'}</p>
                         </div>
                     </div>
                     
                     <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-header bg-white">
-                                <i class="bi bi-bar-chart"></i> Estadísticas
-                            </div>
-                            <div class="card-body text-center">
-                                <h2 class="text-primary">${data.carreras_count || 0}</h2>
-                                <p>Carreras que ofrecen esta modalidad</p>
-                            </div>
+                        <div class="info-card-detail text-center">
+                            <h6 style="color: #2d3748; font-weight: 600; margin-bottom: 15px;">
+                                <i class="bi bi-bar-chart me-2"></i>Estadísticas
+                            </h6>
+                            <div class="stat-number">${data.carreras_count || 0}</div>
+                            <p style="color: #4a5568;">Carreras que ofrecen esta modalidad</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
-                            <div class="card-header bg-white">
-                                <i class="bi bi-book"></i> Carreras con esta Modalidad
-                            </div>
-                            <div class="card-body">
-                                ${carrerasHtml}
-                            </div>
+                        <div class="info-card-detail">
+                            <h6 style="color: #2d3748; font-weight: 600; margin-bottom: 15px;">
+                                <i class="bi bi-book me-2"></i>Carreras con esta Modalidad
+                            </h6>
+                            ${carrerasHtml}
                         </div>
                     </div>
                 </div>
@@ -288,7 +309,8 @@ function eliminarModalidad(id, nombre, countCarreras) {
             title: 'No se puede eliminar',
             html: `La modalidad <strong>${nombre}</strong> está siendo utilizada por ${countCarreras} carreras.<br>
                    Elimina primero las carreras o cambia su modalidad para poder eliminar esta modalidad.`,
-            confirmButtonColor: '#4e73df'
+            confirmButtonColor: '#667eea',
+            background: 'white'
         });
         return;
     }
@@ -298,10 +320,11 @@ function eliminarModalidad(id, nombre, countCarreras) {
         html: `¿Estás seguro de eliminar la modalidad <strong>${nombre}</strong>?<br>Esta acción no se puede deshacer.`,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#e74a3b',
-        cancelButtonColor: '#858796',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
         confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
+        background: 'white'
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = `index.php?action=modalidad-eliminar&id=${id}`;
@@ -313,18 +336,19 @@ function eliminarModalidad(id, nombre, countCarreras) {
 function filtrarModalidades() {
     const busqueda = document.getElementById('buscarModalidad').value.toLowerCase();
     const tarjetas = document.querySelectorAll('.modalidad-card');
+    let visibleCount = 0;
     
     tarjetas.forEach(tarjeta => {
         const nombre = tarjeta.dataset.nombre;
         if (nombre.includes(busqueda)) {
             tarjeta.style.display = '';
+            visibleCount++;
         } else {
             tarjeta.style.display = 'none';
         }
     });
     
     // Mostrar mensaje si no hay resultados
-    const visibleCount = Array.from(tarjetas).filter(t => t.style.display !== 'none').length;
     const grid = document.getElementById('modalidadesGrid');
     const mensajeExistente = document.getElementById('noResultsMessage');
     
@@ -332,8 +356,13 @@ function filtrarModalidades() {
         if (!mensajeExistente) {
             const msg = document.createElement('div');
             msg.id = 'noResultsMessage';
-            msg.className = 'col-12 alert alert-warning mt-3';
-            msg.innerHTML = 'No se encontraron modalidades que coincidan con la búsqueda.';
+            msg.className = 'col-12';
+            msg.innerHTML = `
+                <div class="no-results">
+                    <i class="bi bi-search me-2"></i>
+                    No se encontraron modalidades que coincidan con la búsqueda.
+                </div>
+            `;
             grid.appendChild(msg);
         }
     } else if (mensajeExistente) {
@@ -350,7 +379,9 @@ document.getElementById('formModalidad').addEventListener('submit', function(e) 
         Swal.fire({
             icon: 'error',
             title: 'Nombre inválido',
-            text: 'El nombre debe tener al menos 3 caracteres'
+            text: 'El nombre debe tener al menos 3 caracteres',
+            confirmButtonColor: '#667eea',
+            background: 'white'
         });
         return;
     }
@@ -360,69 +391,11 @@ document.getElementById('formModalidad').addEventListener('submit', function(e) 
         Swal.fire({
             icon: 'error',
             title: 'Nombre muy largo',
-            text: 'El nombre no puede exceder los 100 caracteres'
+            text: 'El nombre no puede exceder los 100 caracteres',
+            confirmButtonColor: '#667eea',
+            background: 'white'
         });
         return;
     }
 });
 </script>
-
-<style>
-.modalidad-card {
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.modalidad-card .card {
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: none;
-    border-radius: 1rem;
-    overflow: hidden;
-}
-
-.modalidad-card .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
-}
-
-.modalidad-card .card-header {
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.rounded-circle {
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-group {
-    gap: 5px;
-}
-
-.btn-group .btn {
-    margin: 0;
-    border-radius: 0.5rem !important;
-}
-
-@media (max-width: 768px) {
-    .btn-group {
-        flex-direction: column;
-    }
-    
-    .btn-group .btn {
-        width: 100%;
-    }
-}
-</style>

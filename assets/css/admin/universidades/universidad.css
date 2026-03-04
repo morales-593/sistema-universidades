@@ -1,13 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-.universidades-catalogo {
+.admin-universidades {
   font-family: "Poppins", sans-serif;
   min-height: 100vh;
   padding: 10px;
 }
 
 /* Header */
-.catalogo-header {
+.admin-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 25px;
   padding: 30px;
@@ -19,7 +19,7 @@
   animation: slideDown 0.5s ease-out;
 }
 
-.catalogo-header::before {
+.admin-header::before {
   content: "";
   position: absolute;
   top: -50%;
@@ -34,60 +34,91 @@
   animation: rotate 20s linear infinite;
 }
 
-.catalogo-header h2 {
+.admin-header h2 {
   font-size: 2.2rem;
   font-weight: 700;
-  margin-bottom: 5px;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 15px;
   position: relative;
 }
 
-.catalogo-header h2 i {
+.admin-header h2 i {
   font-size: 2.5rem;
   animation: bounce 2s ease infinite;
 }
 
-.catalogo-header p {
+/* Action Bar */
+.action-bar {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  animation: fadeInUp 0.5s ease-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.btn-nuevo {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 12px 25px;
   font-size: 1rem;
-  opacity: 0.95;
-  margin: 0;
-  position: relative;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-nuevo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+  color: white;
 }
 
 /* Filter Section */
 .filter-section {
-  background: white;
-  border-radius: 20px;
-  padding: 25px;
-  margin-bottom: 30px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-  animation: fadeInUp 0.5s ease-out;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 .filter-select,
 .filter-input {
   border: 2px solid #e2e8f0;
   border-radius: 15px;
-  padding: 12px 20px;
-  font-size: 0.95rem;
+  padding: 10px 15px;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
   background-color: white;
 }
 
 .filter-select {
+  min-width: 180px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 15px center;
+  background-position: right 10px center;
   appearance: none;
 }
 
 .filter-input {
-  padding-left: 45px;
+  flex: 1;
+  min-width: 200px;
+  padding-left: 40px;
   background: white
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E")
-    no-repeat 15px center;
+    no-repeat 12px center;
 }
 
 .filter-select:focus,
@@ -97,18 +128,15 @@
   outline: none;
 }
 
-.total-badge {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 15px;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+/* Cards Grid */
+.universidades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+  animation: fadeInUp 0.6s ease-out;
 }
 
-/* University Cards */
+/* University Card */
 .universidad-card {
   animation: fadeInUp 0.5s ease-out;
   animation-fill-mode: both;
@@ -132,12 +160,6 @@
 .universidad-card:nth-child(6) {
   animation-delay: 0.35s;
 }
-.universidad-card:nth-child(7) {
-  animation-delay: 0.4s;
-}
-.universidad-card:nth-child(8) {
-  animation-delay: 0.45s;
-}
 
 .card-universidad {
   border: none;
@@ -148,11 +170,8 @@
   transition: all 0.3s ease;
   height: 100%;
   position: relative;
-}
-
-.card-universidad:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+  display: flex;
+  flex-direction: column;
 }
 
 .card-universidad::before {
@@ -185,7 +204,7 @@
 }
 
 .card-universidad:hover .universidad-logo {
-  transform: scale(1.05) rotate(5deg);
+  transform: scale(1.05) rotate(2deg);
 }
 
 .logo-placeholder {
@@ -197,7 +216,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
 }
 
@@ -208,12 +227,12 @@
   margin-bottom: 5px;
 }
 
-.region-badge {
+.region-badge-card {
   background: linear-gradient(135deg, #667eea15, #764ba215);
   color: #667eea;
-  padding: 5px 12px;
+  padding: 4px 12px;
   border-radius: 50px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -222,13 +241,14 @@
 
 .card-body-universidad {
   padding: 20px;
+  flex: 1;
 }
 
 .universidad-descripcion {
   color: #4a5568;
   font-size: 0.9rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  line-height: 1.5;
+  margin-bottom: 15px;
   min-height: 60px;
 }
 
@@ -236,90 +256,232 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #4a5568;
-  font-size: 0.9rem;
-  padding: 8px 12px;
-  background: #f8f9fc;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.info-item:hover {
-  background: #edf2f7;
-  transform: translateX(5px);
+  font-size: 0.85rem;
 }
 
 .info-item i {
   color: #667eea;
-  font-size: 1.1rem;
   width: 20px;
+  font-size: 1rem;
 }
 
-.carreras-stats {
+.stats-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
-  padding-top: 20px;
+  align-items: center;
+  margin-top: 15px;
+  padding-top: 15px;
   border-top: 2px dashed #e2e8f0;
 }
 
 .carreras-badge {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  padding: 8px 15px;
+  background: linear-gradient(135deg, #28a74515, #20c99715);
+  color: #28a745;
+  padding: 6px 12px;
   border-radius: 12px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
 }
 
-.btn-view-universidad {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+.fecha-badge {
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-footer-universidad {
+  background: #f8f9fc;
+  border-top: 1px solid #edf2f7;
+  padding: 15px 20px;
+}
+
+.action-group {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-action-card {
+  flex: 1;
+  padding: 8px 12px;
   border: none;
   border-radius: 12px;
-  padding: 8px 20px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.btn-view-universidad:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+.btn-view-card {
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+  color: #667eea;
+}
+
+.btn-view-card:hover {
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
+  transform: translateY(-2px);
+}
+
+.btn-edit-card {
+  background: linear-gradient(135deg, #ffc10715, #fd7e1415);
+  color: #fd7e14;
+}
+
+.btn-edit-card:hover {
+  background: linear-gradient(135deg, #ffc107, #fd7e14);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-delete-card {
+  background: linear-gradient(135deg, #dc354515, #c8233315);
+  color: #dc3545;
+}
+
+.btn-delete-card:hover {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  transform: translateY(-2px);
 }
 
 /* Modal Styles */
-.modal-content-universidad {
+.modal-content-admin {
   border: none;
   border-radius: 25px;
   overflow: hidden;
 }
 
-.modal-header-universidad {
+.modal-header-admin {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   border: none;
   padding: 20px 25px;
 }
 
-.modal-header-universidad .btn-close {
+.modal-header-admin .btn-close {
   filter: brightness(0) invert(1);
 }
 
-.modal-body-universidad {
+.modal-body-admin {
   padding: 30px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 
-.universidad-detail-logo {
+.modal-footer-admin {
+  border-top: 1px solid #edf2f7;
+  padding: 20px 25px;
+}
+
+/* Form Styles */
+.form-label-admin {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.form-control-admin,
+.form-select-admin {
+  border: 2px solid #e2e8f0;
+  border-radius: 15px;
+  padding: 12px 15px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  background: white;
+}
+
+.form-control-admin:focus,
+.form-select-admin:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  outline: none;
+}
+
+textarea.form-control-admin {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.file-input {
+  padding: 10px;
+  background: #f8f9fc;
+}
+
+.preview-container {
+  margin-top: 15px;
+  text-align: center;
+  padding: 15px;
+  background: #f8f9fc;
+  border-radius: 15px;
+}
+
+.preview-container img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 15px;
+  border: 3px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-hint {
+  font-size: 0.8rem;
+  color: #718096;
+  margin-top: 5px;
+  display: block;
+}
+
+.btn-cancel {
+  background: #edf2f7;
+  color: #4a5568;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 30px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* Detail Modal */
+.detail-logo {
   width: 120px;
   height: 120px;
   border-radius: 30px;
@@ -329,22 +491,21 @@
   margin-bottom: 20px;
 }
 
-.info-card {
+.info-card-detail {
   background: #f8f9fc;
+  border: 1px solid #e2e8f0;
   border-radius: 20px;
   padding: 20px;
   height: 100%;
   transition: all 0.3s ease;
-  border: 1px solid #e2e8f0;
 }
 
-.info-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
+.info-card-detail:hover {
   border-color: #667eea;
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
 }
 
-.info-card h6 {
+.info-card-detail h6 {
   color: #2d3748;
   font-weight: 600;
   margin-bottom: 15px;
@@ -353,46 +514,31 @@
   gap: 8px;
 }
 
-.info-card p {
-  margin-bottom: 10px;
+.info-card-detail p {
   color: #4a5568;
-}
-
-.info-card i {
-  color: #667eea;
-  width: 20px;
-}
-
-.carrera-item {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 15px;
-  padding: 15px;
   margin-bottom: 10px;
+}
+
+.carreras-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.carreras-table tr {
+  background: #f8f9fc;
+  border-radius: 15px;
   transition: all 0.3s ease;
 }
 
-.carrera-item:hover {
-  border-color: #667eea;
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+.carreras-table tr:hover {
+  background: linear-gradient(135deg, #667eea15, #764ba215);
   transform: translateX(5px);
 }
 
-.carrera-item h6 {
-  color: #2d3748;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.modalidad-badge {
-  background: linear-gradient(135deg, #667eea15, #764ba215);
-  color: #667eea;
-  padding: 3px 10px;
-  border-radius: 50px;
-  font-size: 0.8rem;
-  display: inline-block;
-  margin-right: 5px;
-  margin-top: 5px;
+.carreras-table td {
+  padding: 12px 15px;
+  border: none;
 }
 
 /* Empty State */
@@ -415,7 +561,7 @@
   font-size: 1.2rem;
 }
 
-/* No Results Message */
+/* No Results */
 .no-results {
   background: linear-gradient(135deg, #fff3cd, #ffeaa7);
   color: #856404;
@@ -426,6 +572,21 @@
   font-size: 1.1rem;
   margin-top: 20px;
   animation: fadeIn 0.5s ease-out;
+}
+
+/* Scrollbar */
+.modal-body-admin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body-admin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.modal-body-admin::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 10px;
 }
 
 /* Animations */
