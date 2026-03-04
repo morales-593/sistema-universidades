@@ -1,0 +1,408 @@
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    .info-catalogo {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+    
+    /* Header */
+    .catalogo-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 25px;
+        padding: 30px;
+        margin-bottom: 30px;
+        color: white;
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        animation: slideDown 0.5s ease-out;
+    }
+    
+    .catalogo-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+    
+    .catalogo-header h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+    }
+    
+    .catalogo-header h2 i {
+        font-size: 2.5rem;
+        animation: bounce 2s ease infinite;
+    }
+    
+    .catalogo-header p {
+        font-size: 1rem;
+        opacity: 0.95;
+        margin: 0;
+        position: relative;
+    }
+    
+    /* Filter Section */
+    .filter-section {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        animation: fadeInUp 0.5s ease-out;
+    }
+    
+    .filter-select, .filter-input {
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background-color: white;
+    }
+    
+    .filter-select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        appearance: none;
+    }
+    
+    .filter-input {
+        padding-left: 45px;
+        background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 15px center;
+    }
+    
+    .filter-select:focus, .filter-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+    
+    .total-badge {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 15px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    /* Table Card */
+    .table-card {
+        border: none;
+        border-radius: 25px;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .table-card .card-header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        padding: 20px 25px;
+    }
+    
+    .table-card .card-header h6 {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .table-card .card-header h6 i {
+        font-size: 1.4rem;
+    }
+    
+    .table-card .card-body {
+        padding: 0;
+        background: #f8f9fc;
+    }
+    
+    /* Table Styles */
+    .modern-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: white;
+    }
+    
+    .modern-table thead th {
+        color:black;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 15px 10px;
+        white-space: nowrap;
+      
+        position: relative;
+    }
+    
+    .modern-table thead th:first-child {
+        border-top-left-radius: 20px;
+    }
+    
+    .modern-table thead th:last-child {
+        border-top-right-radius: 20px;
+    }
+    
+    .modern-table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #edf2f7;
+    }
+    
+
+    
+    .modern-table tbody td {
+        padding: 15px 10px;
+        font-size: 0.85rem;
+        color: #4a5568;
+        vertical-align: middle;
+        border-bottom: 1px solid #edf2f7;
+    }
+    
+    .universidad-cell {
+        font-weight: 600;
+        color: #2d3748;
+    }
+    
+    .badge-region {
+        background: linear-gradient(135deg, #667eea15, #764ba215);
+        color: #667eea;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    
+    .modalidad-mini-badge {
+        background: #edf2f7;
+        color: #0749bb;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        display: inline-block;
+        margin: 2px;
+        white-space: nowrap;
+    }
+    
+    .info-cell {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #718096;
+    }
+    
+    .fecha-info {
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+    
+    .fecha-info .nombre {
+        font-weight: 600;
+        color: #2d3748;
+    }
+    
+    .fecha-info .fecha {
+        color: #718096;
+    }
+    
+    .btn-view-info {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+    }
+
+    
+    /* Modal Styles */
+    .modal-content-info {
+        border: none;
+        border-radius: 25px;
+        overflow: hidden;
+    }
+    
+    .modal-header-info {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 20px 25px;
+    }
+    
+    .modal-header-info .btn-close {
+        filter: brightness(0) invert(1);
+    }
+    
+    .modal-body-info {
+        padding: 30px;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    /* Info Cards in Modal */
+    .info-detail-card {
+        background: #f8f9fc;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        padding: 20px;
+        height: 100%;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+    
+    .info-detail-card:hover {
+        transform: translateY(-5px);
+        border-color: #667eea;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.1);
+    }
+    
+    .info-detail-card .card-header-info {
+        color: #2d3748;
+        font-weight: 600;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .info-detail-card .card-header-info i {
+        color: #667eea;
+    }
+    
+    .info-detail-card .card-body-info {
+        color: #4a5568;
+        line-height: 1.6;
+    }
+    
+    .modalidad-badge-lg {
+        background: linear-gradient(135deg, #667eea15, #764ba215);
+        color: #667eea;
+        padding: 8px 15px;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin: 0 5px 5px 0;
+    }
+    
+    .footer-info {
+        background: #f8f9fc;
+        border-radius: 15px;
+        padding: 15px;
+        font-size: 0.85rem;
+        color: #718096;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .empty-state i {
+        font-size: 4rem;
+        color: #cbd5e0;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state p {
+        color: #718096;
+        font-size: 1.2rem;
+    }
+    
+    /* No Results Message */
+    .no-results {
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        color: #856404;
+        border: none;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-top: 20px;
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* Animations */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Scrollbar */
+    .modal-body-info::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .modal-body-info::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .modal-body-info::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 10px;
+    }

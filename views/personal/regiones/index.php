@@ -3,82 +3,93 @@
 if (!isset($regiones)) $regiones = [];
 ?>
 
-<div class="row mb-4">
-    <div class="col-12">
-        <h2 class="mb-4">
-            <i class="bi bi-geo-alt"></i> Catálogo de Regiones
+<link rel="stylesheet" href="assets/css/personal/region/regiones.css">
+
+<div class="regiones-catalogo">
+    <!-- Header -->
+    <div class="catalogo-header">
+        <h2>
+            <i class="bi bi-geo-alt"></i>
+            Catálogo de Regiones
         </h2>
-        <p class="text-muted">Vista de solo lectura - Personal</p>
+        <p>
+            <i class="bi bi-info-circle me-2"></i>
+            Vista de solo lectura - Personal
+        </p>
     </div>
-</div>
 
-<!-- Filtro de búsqueda -->
-<div class="row mb-4">
-    <div class="col-md-6">
-        <input type="text" class="form-control" id="buscarRegion" placeholder="Buscar región..." onkeyup="filtrarRegiones()">
-    </div>
-    <div class="col-md-6 text-end">
-        <span class="text-muted">Total: <?php echo count($regiones); ?> regiones</span>
-    </div>
-</div>
-
-<!-- Tarjetas de Regiones -->
-<div class="row" id="regionesGrid">
-    <?php if (empty($regiones)): ?>
-    <div class="col-12">
-        <div class="alert alert-info">
-            No hay regiones registradas en el sistema.
-        </div>
-    </div>
-    <?php else: ?>
-        <?php foreach ($regiones as $r): 
-            $regionModel = new Region();
-            $countUniversidades = $regionModel->getUniversidadesCount($r['id']);
-        ?>
-        <div class="col-md-6 col-lg-4 mb-4 region-card" data-nombre="<?php echo htmlspecialchars($r['nombre']); ?>">
-            <div class="card h-100 shadow">
-                <div class="card-body text-center">
-                    <div class="bg-primary text-white rounded-circle d-inline-flex p-3 mb-3">
-                        <i class="bi bi-geo-alt fs-1"></i>
-                    </div>
-                    <h4 class="card-title"><?php echo htmlspecialchars($r['nombre']); ?></h4>
-                    
-                    <div class="mt-3">
-                        <div class="d-flex justify-content-around">
-                            <div>
-                                <span class="badge bg-info p-2">
-                                    <i class="bi bi-buildings"></i> <?php echo $countUniversidades; ?> Universidades
-                                </span>
-                            </div>
-                            <div>
-                                <span class="badge bg-secondary p-2">
-                                    <i class="bi bi-calendar"></i> <?php echo date('d/m/Y', strtotime($r['created_at'])); ?>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary mt-3" onclick="verRegion(<?php echo $r['id']; ?>)">
-                        <i class="bi bi-eye"></i> Ver detalles
-                    </button>
+    <!-- Filtro de búsqueda -->
+    <div class="search-section">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <input type="text" class="search-input w-100" id="buscarRegion" placeholder="Buscar región por nombre..." onkeyup="filtrarRegiones()">
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <div class="total-badge">
+                    <i class="bi bi-map"></i>
+                    Total: <?php echo count($regiones); ?> regiones
                 </div>
             </div>
         </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    </div>
+
+    <!-- Tarjetas de Regiones -->
+    <div class="row" id="regionesGrid">
+        <?php if (empty($regiones)): ?>
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="bi bi-geo-alt"></i>
+                <p>No hay regiones registradas en el sistema.</p>
+            </div>
+        </div>
+        <?php else: ?>
+            <?php foreach ($regiones as $r): 
+                $regionModel = new Region();
+                $countUniversidades = $regionModel->getUniversidadesCount($r['id']);
+            ?>
+            <div class="col-md-6 col-lg-4 mb-4 region-card" data-nombre="<?php echo htmlspecialchars(strtolower($r['nombre'])); ?>">
+                <div class="card-region">
+                    <div class="card-body">
+                        <div class="region-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h4 class="region-nombre"><?php echo htmlspecialchars($r['nombre']); ?></h4>
+                        
+                        <div class="region-stats">
+                            <span class="stat-badge universidades">
+                                <i class="bi bi-buildings"></i>
+                                <?php echo $countUniversidades; ?> Universidades
+                            </span>
+                            <span class="stat-badge fecha">
+                                <i class="bi bi-calendar"></i>
+                                <?php echo date('d/m/Y', strtotime($r['created_at'])); ?>
+                            </span>
+                        </div>
+                        
+                        <button class="btn-view-region" onclick="verRegion(<?php echo $r['id']; ?>)">
+                            <i class="bi bi-eye"></i>
+                            Ver detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
 </div>
 
-<!-- Modal para Ver Detalle de Región (igual que admin) -->
+<!-- Modal para Ver Detalle de Región -->
 <div class="modal fade" id="modalVerRegion" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-info text-white">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header modal-header-custom">
                 <h5 class="modal-title">
-                    <i class="bi bi-geo-alt"></i> Detalle de Región
+                    <i class="bi bi-geo-alt me-2"></i>
+                    Detalle de Región
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body" id="detalleRegionContent">
+            <div class="modal-body modal-body-custom" id="detalleRegionContent">
                 <!-- Contenido dinámico -->
             </div>
             <div class="modal-footer">
@@ -100,49 +111,53 @@ function verRegion(id) {
                 universidadesHtml = '<div class="row">';
                 data.universidades.forEach(u => {
                     universidadesHtml += `
-                        <div class="col-md-6 mb-2">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6>${u.nombre}</h6>
-                                    <a href="index.php?action=universidades&region=${u.id}" class="btn btn-sm btn-outline-primary">
-                                        Ver carreras
-                                    </a>
-                                </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="universidad-mini-card">
+                                <h6 class="mb-2">${u.nombre}</h6>
+                                <a href="index.php?action=universidades&region=${u.id}" class="btn-universidad">
+                                    <i class="bi bi-eye me-1"></i> Ver carreras
+                                </a>
                             </div>
                         </div>
                     `;
                 });
                 universidadesHtml += '</div>';
             } else {
-                universidadesHtml = '<p class="text-muted">No hay universidades en esta región</p>';
+                universidadesHtml = `
+                    <div class="text-center py-4">
+                        <i class="bi bi-building fs-1 text-muted d-block mb-3"></i>
+                        <p class="text-muted">No hay universidades en esta región</p>
+                    </div>
+                `;
             }
             
             const html = `
                 <div class="text-center mb-4">
-                    <i class="bi bi-geo-alt fs-1 text-primary"></i>
-                    <h3 class="mt-2">${data.nombre}</h3>
+                    <div class="region-detail-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <h3 class="mt-2 fw-bold" style="color: #2d3748;">${data.nombre}</h3>
                 </div>
                 
                 <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-body text-center">
-                                <h5>${data.universidades_count || 0}</h5>
-                                <small>Universidades</small>
-                            </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="detail-card">
+                            <h5>${data.universidades_count || 0}</h5>
+                            <small>Universidades</small>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card bg-light">
-                            <div class="card-body text-center">
-                                <h5>${new Date(data.created_at).toLocaleDateString()}</h5>
-                                <small>Fecha de creación</small>
-                            </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="detail-card">
+                            <h5>${new Date(data.created_at).toLocaleDateString()}</h5>
+                            <small>Fecha de creación</small>
                         </div>
                     </div>
                 </div>
                 
-                <h5 class="mb-3">Universidades en esta región:</h5>
+                <h5 class="mb-3" style="color: #2d3748; font-weight: 600;">
+                    <i class="bi bi-building me-2"></i>
+                    Universidades en esta región:
+                </h5>
                 ${universidadesHtml}
             `;
             
@@ -155,71 +170,42 @@ function verRegion(id) {
 function filtrarRegiones() {
     const busqueda = document.getElementById('buscarRegion').value.toLowerCase();
     const tarjetas = document.querySelectorAll('.region-card');
+    let visibleCount = 0;
     
     tarjetas.forEach(tarjeta => {
-        const nombre = tarjeta.dataset.nombre.toLowerCase();
+        const nombre = tarjeta.dataset.nombre;
         if (nombre.includes(busqueda)) {
             tarjeta.style.display = '';
+            visibleCount++;
         } else {
             tarjeta.style.display = 'none';
         }
     });
     
     // Mostrar mensaje si no hay resultados
-    const visibleCount = Array.from(tarjetas).filter(t => t.style.display !== 'none').length;
     const mensaje = document.getElementById('noResultsMessage');
     
     if (visibleCount === 0) {
         if (!mensaje) {
             const msg = document.createElement('div');
             msg.id = 'noResultsMessage';
-            msg.className = 'col-12 alert alert-warning mt-3';
-            msg.innerHTML = 'No se encontraron regiones que coincidan con la búsqueda.';
+            msg.className = 'col-12 no-results';
+            msg.innerHTML = `
+                <i class="bi bi-search me-2"></i>
+                No se encontraron regiones que coincidan con la búsqueda.
+            `;
             document.getElementById('regionesGrid').appendChild(msg);
         }
     } else if (mensaje) {
         mensaje.remove();
     }
 }
+
+// Inicializar tooltips si los hay
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
 </script>
-
-<style>
-.region-card {
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.region-card .card {
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.region-card .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
-}
-
-.rounded-circle {
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-    .region-card {
-        margin-bottom: 1rem;
-    }
-}
-</style>

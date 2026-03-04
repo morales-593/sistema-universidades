@@ -284,24 +284,6 @@ body {
   justify-content: center;
 }
 
-/* Dashboard cards */
-.stats-card {
-  border-left: 0.25rem solid;
-  border-radius: 0.75rem;
-}
-
-.stats-card.primary {
-  border-left-color: var(--primary-color);
-}
-.stats-card.success {
-  border-left-color: var(--success-color);
-}
-.stats-card.info {
-  border-left-color: var(--info-color);
-}
-.stats-card.warning {
-  border-left-color: var(--warning-color);
-}
 
 /* Filtros */
 .filter-section {

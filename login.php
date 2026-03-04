@@ -1,56 +1,81 @@
 <?php
 // Este archivo es incluido por AuthController
 ?>
-<div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow-lg border-0 rounded-4 mt-5">
-                <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
-                    <i class="bi bi-building fs-1"></i>
-                    <h3 class="mt-2">Sistema Universidades</h3>
-                    <p class="mb-0 small">Gestión de Catálogo - Ecuador</p>
+<link rel="stylesheet" href="assets/css/login.css">
+
+<div class="login-container">
+    <div class="floating-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+    </div>
+
+    <div class="card-custom">
+        <div class="card-header-custom">
+            <i class="bi bi-building header-icon"></i>
+            <h1 class="header-title">Sistema Universidades</h1>
+            <p class="header-subtitle">Gestión de Catálogo - Ecuador</p>
+        </div>
+
+        <div class="card-body-custom">
+            <form method="POST" action="index.php?action=login">
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="bi bi-envelope-fill"></i> Correo electrónico
+                    </label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <input type="email" class="form-control-custom" id="email" name="email"
+                            placeholder="tu@email.com" required>
+                    </div>
                 </div>
-                <div class="card-body p-4">
-                    <form method="POST" action="index.php?action=login">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Correo electrónico</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Contraseña</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
-                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="bi bi-lock-fill"></i> Contraseña
+                    </label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-lock input-icon"></i>
+                        <input type="password" class="form-control-custom" id="password" name="password"
+                            placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="bi bi-eye"></i>
                         </button>
-                        
-                        <?php if (isset($_GET['error'])): ?>
-                        <div class="alert alert-danger">
-                            <i class="bi bi-exclamation-triangle"></i> Credenciales incorrectas
-                        </div>
-                        <?php endif; ?>
-                    </form>
+                    </div>
                 </div>
-            </div>
+
+                <button type="submit" class="btn-login">
+                    <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                </button>
+
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert-custom">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span>Credenciales incorrectas. Por favor, intenta de nuevo.</span>
+                    </div>
+                <?php endif; ?>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-document.getElementById('togglePassword').addEventListener('click', function() {
-    const password = document.getElementById('password');
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-    this.querySelector('i').classList.toggle('bi-eye');
-    this.querySelector('i').classList.toggle('bi-eye-slash');
-});
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const password = document.getElementById('password');
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('bi-eye');
+        this.querySelector('i').classList.toggle('bi-eye-slash');
+    });
+
+    // Animación adicional para los inputs
+    document.querySelectorAll('.form-control-custom').forEach(input => {
+        input.addEventListener('focus', function () {
+            this.parentElement.classList.add('focused');
+        });
+
+        input.addEventListener('blur', function () {
+            this.parentElement.classList.remove('focused');
+        });
+    });
 </script>
