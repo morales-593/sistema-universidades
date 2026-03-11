@@ -5,7 +5,7 @@ class Modalidad extends Model {
     protected $table = 'modalidades';
 
     public function create($data) {
-        $query = "INSERT INTO " . $this->table . " (nombre, descripcion) VALUES (:nombre, :descripcion)";
+        $query = "INSERT INTO " . $this->table . " (nombre, descripcion, created_at) VALUES (:nombre, :descripcion, NOW())";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':nombre', $data['nombre']);
         $stmt->bindParam(':descripcion', $data['descripcion']);
@@ -17,14 +17,14 @@ class Modalidad extends Model {
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':nombre', $data['nombre']);
         $stmt->bindParam(':descripcion', $data['descripcion']);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
     public function getCarrerasCount($id) {
         $query = "SELECT COUNT(*) as total FROM carrera_modalidad WHERE id_modalidad = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
@@ -37,9 +37,9 @@ class Modalidad extends Model {
                   JOIN universidades u ON c.id_universidad = u.id
                   JOIN regiones r ON u.id_region = r.id
                   WHERE cm.id_modalidad = :id_modalidad
-                  ORDER BY c.nombre";
+                  ORDER BY c.nombre ASC";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id_modalidad', $id_modalidad);
+        $stmt->bindParam(':id_modalidad', $id_modalidad, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -47,7 +47,7 @@ class Modalidad extends Model {
     public function getById($id) {
         $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -60,10 +60,26 @@ class Modalidad extends Model {
     }
 
     public function delete($id) {
+        // Primero verificar que no tenga relaciones
+        $count = $this->getCarrerasCount($id);
+        if ($count > 0) {
+            return false; // No se puede eliminar si tiene carreras asociadas
+        }
+        
         $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
+    }
+    
+    // Método adicional para verificar si existe una modalidad
+    public function exists($id) {
+        $query = "SELECT COUNT(*) as total FROM " . $this->table . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] > 0;
     }
 }
 ?>

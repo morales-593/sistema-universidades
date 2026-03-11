@@ -70,7 +70,7 @@ if (!isset($regiones))
                 <table class="modern-table-admin" id="tablaRegiones" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>N°</th>
                             <th>Nombre</th>
                             <th>Universidades</th>
                             <th>Fecha Creación</th>
@@ -88,14 +88,16 @@ if (!isset($regiones))
                                 </td>
                             </tr>
                         <?php else: ?>
-                            <?php foreach ($regiones as $r):
+                            <?php 
+                            $contador = 1;
+                            foreach ($regiones as $r):
                                 $regionModel = new Region();
                                 $countUniversidades = $regionModel->getUniversidadesCount($r['id']);
                                 ?>
                                 <tr data-id="<?php echo $r['id']; ?>"
                                     data-nombre="<?php echo htmlspecialchars($r['nombre']); ?>">
                                     <td>
-                                        <span class="id-badge">#<?php echo $r['id']; ?></span>
+                                        <span class="numero-badge"><?php echo $contador++; ?></span>
                                     </td>
                                     <td class="region-nombre"><?php echo htmlspecialchars($r['nombre']); ?></td>
                                     <td>
@@ -136,7 +138,7 @@ if (!isset($regiones))
     </div>
 </div>
 
-<!-- Modal para Ver Detalle de Región -->
+<!-- Modal para Ver Detalle de Región (SIN ID visible) -->
 <div class="modal fade" id="modalVerRegion" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content modal-content-admin">
@@ -148,7 +150,7 @@ if (!isset($regiones))
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body modal-body-admin" id="detalleRegionContent">
-                <!-- Contenido dinámico -->
+                <!-- Contenido dinámico sin ID -->
             </div>
             <div class="modal-footer modal-footer-admin">
                 <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cerrar</button>
@@ -213,7 +215,7 @@ if (!isset($regiones))
         new bootstrap.Modal(document.getElementById('modalRegion')).show();
     }
 
-    // Función para ver detalle de región
+    // Función para ver detalle de región (SIN ID visible)
     function verRegion(id) {
         fetch(`index.php?action=region-ver&id=${id}`)
             .then(response => response.json())
@@ -222,11 +224,14 @@ if (!isset($regiones))
 
                 if (data.universidades && data.universidades.length > 0) {
                     universidadesHtml = '<div style="max-height: 300px; overflow-y: auto;">';
-                    data.universidades.forEach(u => {
+                    data.universidades.forEach((u, index) => {
                         universidadesHtml += `
-                        <div class="university-item">
-                            <span><i class="bi bi-building me-2" style="color: #667eea;"></i>${u.nombre}</span>
-                            <span class="carreras-count">
+                        <div class="university-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #edf2f7;">
+                            <span>
+                                <span class="numero-mini-badge" style="background: #667eea; color: white; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.8rem; margin-right: 10px;">${index + 1}</span>
+                                <i class="bi bi-building me-2" style="color: #667eea;"></i>${u.nombre}
+                            </span>
+                            <span class="carreras-count" style="background: #f0f4ff; padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; color: #667eea;">
                                 <i class="bi bi-book me-1"></i>${u.carreras_count || 0} carreras
                             </span>
                         </div>
@@ -242,42 +247,63 @@ if (!isset($regiones))
                 `;
                 }
 
+                // HTML del detalle SIN MOSTRAR EL ID
                 const html = `
                 <div class="text-center mb-4">
-                    <div class="detail-icon">
-                        <i class="bi bi-geo-alt"></i>
+                    <div class="detail-icon" style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="bi bi-geo-alt" style="font-size: 2.5rem; color: white;"></i>
                     </div>
-                    <h4 style="color: #2d3748; font-weight: 700;">${data.nombre}</h4>
+                    <h3 style="color: #2d3748; font-weight: 700; margin-bottom: 5px;">${data.nombre}</h3>
                 </div>
                 
-                <table class="info-table">
-                    <tr>
-                        <td><i class="bi bi-hash me-2"></i>ID:</td>
-                        <td><strong>#${data.id}</strong></td>
-                    </tr>
-                    <tr>
-                        <td><i class="bi bi-building me-2"></i>Universidades:</td>
-                        <td>
-                            <span class="universidades-count">
-                                <i class="bi bi-building"></i> ${data.universidades_count || 0} universidades
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><i class="bi bi-calendar me-2"></i>Fecha Creación:</td>
-                        <td>${new Date(data.created_at).toLocaleDateString()}</td>
-                    </tr>
-                </table>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="info-card-detail" style="background: #f8fafc; padding: 20px; border-radius: 15px;">
+                            <h6 style="color: #2d3748; font-weight: 600; margin-bottom: 15px;">
+                                <i class="bi bi-info-circle me-2"></i>Información General
+                            </h6>
+                            <p style="margin-bottom: 10px;">
+                                <i class="bi bi-building me-2" style="color: #667eea;"></i> 
+                                <strong>Universidades:</strong> ${data.universidades_count || 0}
+                            </p>
+                            <p style="margin-bottom: 0;">
+                                <i class="bi bi-calendar me-2" style="color: #667eea;"></i> 
+                                <strong>Fecha Creación:</strong> ${new Date(data.created_at).toLocaleDateString()}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="info-card-detail" style="background: #f8fafc; padding: 20px; border-radius: 15px; text-align: center;">
+                            <h6 style="color: #2d3748; font-weight: 600; margin-bottom: 15px;">
+                                <i class="bi bi-bar-chart me-2"></i>Estadísticas
+                            </h6>
+                            <div style="font-size: 2.5rem; font-weight: 700; color: #667eea;">${data.universidades_count || 0}</div>
+                            <p style="color: #4a5568; margin-bottom: 0;">Universidades registradas</p>
+                        </div>
+                    </div>
+                </div>
                 
-                <h6 class="mb-3" style="color: #2d3748; font-weight: 600;">
-                    <i class="bi bi-building me-2"></i>
-                    Universidades en esta región:
-                </h6>
-                ${universidadesHtml}
+                <div class="universidades-section" style="margin-top: 20px;">
+                    <h5 style="color: #2d3748; font-weight: 600; margin-bottom: 15px;">
+                        <i class="bi bi-building me-2" style="color: #667eea;"></i>
+                        Universidades en esta región:
+                    </h5>
+                    ${universidadesHtml}
+                </div>
             `;
 
                 document.getElementById('detalleRegionContent').innerHTML = html;
                 new bootstrap.Modal(document.getElementById('modalVerRegion')).show();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al cargar los datos de la región',
+                    confirmButtonColor: '#667eea'
+                });
             });
     }
 
@@ -320,6 +346,9 @@ if (!isset($regiones))
         let visibleCount = 0;
 
         filas.forEach(fila => {
+            // Saltar la fila de "no resultados" si existe
+            if (fila.id === 'noResultsMessage') return;
+            
             if (fila.cells.length > 1) {
                 const nombre = fila.cells[1].textContent.toLowerCase();
                 if (nombre.includes(busqueda)) {
@@ -335,15 +364,15 @@ if (!isset($regiones))
         const tbody = document.querySelector('#tablaRegiones tbody');
         const mensajeExistente = document.getElementById('noResultsMessage');
 
-        if (visibleCount === 0 && filas.length > 0 && filas[0].cells.length > 1) {
+        if (visibleCount === 0 && filas.length > 0) {
             if (!mensajeExistente) {
                 const msg = document.createElement('tr');
                 msg.id = 'noResultsMessage';
                 msg.innerHTML = `
                 <td colspan="5" class="text-center py-4">
                     <div class="empty-state">
-                        <i class="bi bi-search"></i>
-                        <p>No se encontraron regiones que coincidan con la búsqueda.</p>
+                        <i class="bi bi-search" style="font-size: 2rem; color: #cbd5e0;"></i>
+                        <p style="margin-top: 15px; color: #4a5568;">No se encontraron regiones que coincidan con la búsqueda.</p>
                     </div>
                 </td>
             `;
