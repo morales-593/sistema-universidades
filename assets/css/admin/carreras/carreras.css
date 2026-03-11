@@ -562,3 +562,208 @@ textarea.form-control-admin {
     transform: rotate(360deg);
   }
 }
+/* ===== RESPONSIVE DESIGN - VERSIÓN MEJORADA ===== */
+@media screen and (max-width: 992px) {
+    .filter-section {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .filter-select,
+    .filter-input {
+        width: 100%;
+    }
+    
+    /* Hacer la tabla scrollable horizontalmente */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .modern-table-admin {
+        min-width: 900px; /* Ancho mínimo para que scrollee correctamente */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .admin-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .admin-header h2 i {
+        font-size: 1.8rem;
+    }
+    
+    .action-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+    }
+    
+    .btn-nuevo {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .filter-section {
+        gap: 10px;
+    }
+    
+    .modal-dialog {
+        margin: 10px;
+    }
+    
+    .modal-body-admin {
+        padding: 20px;
+    }
+    
+    .row {
+        margin: 0;
+    }
+    
+    [class*="col-"] {
+        padding: 0 5px;
+        margin-bottom: 10px;
+    }
+    
+    /* Ajustes para los badges en móvil */
+    .badge-region {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    
+    .modalidad-badge-sm {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+    
+    /* Botones de acción más pequeños en móvil */
+    .btn-action {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+    
+    /* Ajustes para el modal de detalle */
+    .info-card-detail {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .detail-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .admin-header {
+        padding: 20px;
+    }
+    
+    .admin-header h2 {
+        font-size: 1.2rem;
+        gap: 8px;
+    }
+    
+    .admin-header h2 i {
+        font-size: 1.5rem;
+    }
+    
+    .card-header h6 {
+        font-size: 1rem;
+    }
+    
+    .btn-nuevo {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    /* Mejoras para el modal en móviles pequeños */
+    .modal-body-admin {
+        padding: 15px;
+    }
+    
+    .modal-header-admin {
+        padding: 15px;
+    }
+    
+    .modal-footer-admin {
+        padding: 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-cancel,
+    .btn-save {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    /* Ajustes para los contenedores de modalidades */
+    .modalidades-container {
+        padding: 10px;
+        max-height: 120px;
+    }
+    
+    .modalidad-check {
+        margin-right: 8px;
+        margin-bottom: 5px;
+    }
+    
+    .modalidad-check label {
+        font-size: 0.8rem;
+    }
+    
+    /* Ajustes para el formulario */
+    .form-control-admin,
+    .form-select-admin {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    
+    .form-label-admin {
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+    }
+    
+    /* Grid para el detalle */
+    .row.g-3 {
+        gap: 0.5rem !important;
+    }
+    
+    .info-card-detail h6 {
+        font-size: 0.95rem;
+    }
+    
+    .info-card-detail p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Orientación landscape en móviles */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .modal-body-admin {
+        max-height: 60vh;
+    }
+    
+    .detail-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
