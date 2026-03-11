@@ -328,3 +328,343 @@
 .stat-card:nth-child(4) {
   animation-delay: 0.4s;
 }
+/* ===== RESPONSIVE DASHBOARD ===== */
+
+/* Tablets y laptops pequeñas */
+@media screen and (max-width: 1200px) {
+  .stat-value {
+    font-size: 2rem;
+  }
+
+  .stat-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablets y móviles grandes */
+@media screen and (max-width: 992px) {
+  .dashboard-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard-header h2 i {
+    font-size: 2rem;
+  }
+
+  .stat-card .card-body {
+    padding: 20px;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+  }
+
+  .stat-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+  }
+
+  .chart-card .card-header,
+  .table-card .card-header {
+    padding: 15px 20px;
+  }
+
+  .chart-card .card-header h6,
+  .table-card .card-header h6 {
+    font-size: 1rem;
+  }
+
+  .chart-card .card-body {
+    padding: 20px;
+  }
+
+  /* Ajustar gráfico */
+  canvas {
+    max-height: 250px !important;
+  }
+}
+
+/* Móviles grandes */
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    padding: 5px;
+  }
+
+  .dashboard-header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+    gap: 8px;
+  }
+
+  .dashboard-header h2 i {
+    font-size: 1.8rem;
+  }
+
+  /* Stats en grid 2x2 */
+  .col-md-6 {
+    width: 50%;
+    float: left;
+    padding: 0 8px;
+  }
+
+  .stat-card .card-body {
+    padding: 15px;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    margin-right: 10px !important;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-trend {
+    font-size: 0.7rem;
+  }
+
+  /* Tarjetas apiladas */
+  .col-lg-6 {
+    width: 100%;
+    padding: 0 8px;
+  }
+
+  .chart-card,
+  .summary-card {
+    margin-bottom: 15px;
+  }
+
+  /* Resumen items */
+  .summary-item {
+    padding: 15px;
+  }
+
+  .summary-item h3 {
+    font-size: 1.5rem;
+    margin: 5px 0 0;
+  }
+
+  .summary-item i {
+    font-size: 1.2rem !important;
+  }
+
+  /* Quick actions */
+  .quick-actions {
+    margin-top: 15px;
+  }
+
+  .action-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .action-btn i {
+    font-size: 1rem;
+  }
+
+  /* Tabla responsive */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .custom-table {
+    min-width: 600px;
+  }
+
+  .custom-table thead th {
+    padding: 12px 15px;
+    font-size: 0.8rem;
+  }
+
+  .custom-table tbody td {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+  }
+
+  .badge-custom {
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+}
+
+/* Móviles pequeños */
+@media screen and (max-width: 576px) {
+  .dashboard-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .dashboard-header h2 i {
+    font-size: 1.5rem;
+  }
+
+  .col-md-6 {
+    width: 100%;
+    padding: 0 5px;
+    margin-bottom: 10px;
+  }
+
+  .stat-card .card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .d-flex.align-items-center {
+    width: 100%;
+  }
+
+  .stat-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+  }
+
+  /* Resumen items en fila */
+  .summary-item {
+    padding: 12px;
+  }
+
+  .summary-item h3 {
+    font-size: 1.3rem;
+  }
+
+  .summary-item i {
+    display: none; /* Ocultar iconos para ahorrar espacio */
+  }
+
+  /* Ajustar gráfico */
+  canvas {
+    max-height: 200px !important;
+  }
+
+  /* Botones más táctiles */
+  .action-btn {
+    padding: 12px 15px;
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
+/* Móviles muy pequeños */
+@media screen and (max-width: 375px) {
+  .dashboard-header {
+    padding: 12px;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1rem;
+  }
+
+  .dashboard-header h2 i {
+    font-size: 1.3rem;
+  }
+
+  .stat-card .card-body {
+    padding: 12px;
+  }
+
+  .stat-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+  }
+
+  .summary-item small {
+    font-size: 0.7rem;
+  }
+
+  .summary-item h3 {
+    font-size: 1.1rem;
+  }
+
+  .quick-actions h6 {
+    font-size: 0.9rem;
+  }
+
+  .action-btn {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .action-btn i {
+    margin-right: 5px;
+  }
+}
+
+/* Orientación landscape en móviles */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .col-md-6 {
+    width: 50%;
+  }
+
+  .stat-card .card-body {
+    padding: 10px;
+  }
+
+  .stat-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+  }
+
+  canvas {
+    max-height: 150px !important;
+  }
+}
+
+/* Para pantallas táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .action-btn {
+    padding: 14px 20px; /* Botones más grandes para táctil */
+  }
+
+  .stat-card:hover {
+    transform: none; /* Quitar hover en táctil */
+  }
+
+  .action-btn:hover {
+    transform: none;
+  }
+
+  .summary-item:hover {
+    transform: none;
+  }
+}

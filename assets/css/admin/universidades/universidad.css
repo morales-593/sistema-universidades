@@ -638,3 +638,129 @@ textarea.form-control-admin {
     transform: rotate(360deg);
   }
 }
+/* ===== RESPONSIVE PARA FILTROS Y BOTÓN NUEVA UNIVERSIDAD ===== */
+@media screen and (max-width: 768px) {
+    .action-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .btn-nuevo {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .filter-select,
+    .filter-input {
+        width: 100%;
+        min-width: 100%;
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    
+    .filter-select {
+        background-position: right 12px center;
+    }
+    
+    .filter-input {
+        padding-left: 45px;
+        background-position: 12px center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .action-bar {
+        padding: 12px;
+        border-radius: 15px;
+    }
+    
+    .btn-nuevo {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+        border-radius: 12px;
+    }
+    
+    .btn-nuevo i {
+        font-size: 1.1rem;
+    }
+    
+    .filter-select,
+    .filter-input {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+        border-radius: 12px;
+    }
+    
+    .filter-input {
+        padding-left: 40px;
+    }
+    
+    /* Ajuste para el header */
+    .admin-header {
+        padding: 20px 15px;
+    }
+    
+    .admin-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .admin-header h2 i {
+        font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .btn-nuevo {
+        font-size: 0.9rem;
+        padding: 8px 14px;
+    }
+    
+    .filter-select,
+    .filter-input {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+    
+    .filter-input {
+        padding-left: 35px;
+        background-size: 14px;
+    }
+    
+    .admin-header h2 {
+        font-size: 1.2rem;
+        gap: 8px;
+    }
+    
+    .admin-header h2 i {
+        font-size: 1.5rem;
+    }
+}
+
+/* Para tablets en orientación vertical */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .action-bar {
+        padding: 18px;
+    }
+    
+    .btn-nuevo {
+        padding: 10px 20px;
+    }
+    
+    .filter-select {
+        min-width: 160px;
+    }
+    
+    .filter-input {
+        min-width: 180px;
+    }
+}
